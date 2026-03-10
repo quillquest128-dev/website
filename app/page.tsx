@@ -164,16 +164,16 @@ export default async function HomePage() {
               <span className="text-sm font-semibold text-[#00b5e8] uppercase tracking-widest block mb-2">Process</span>
               <h2 className="section-heading">How It Works</h2>
               <p className="text-[#8892a4] mt-3 text-sm max-w-lg mx-auto">
-                Buying from NexusStore is simple, safe, and personal.
+                Buying from Lazo Store is simple, fast, and direct.
               </p>
             </div>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {[
-                { step: '01', title: 'Browse', desc: 'Find the perfect product in our curated store.' },
-                { step: '02', title: 'Request', desc: 'Click Buy and fill in your contact details.' },
-                { step: '03', title: 'Discord', desc: 'Join our Discord and complete payment with a staff member.' },
-                { step: '04', title: 'Delivered', desc: 'Receive your product instantly via Discord.' },
-              ].map(item => (
+  { step: '01', title: 'Browse', desc: 'Choose the product you want from our catalog.' },
+  { step: '02', title: 'Order', desc: 'Select quantity and submit your request.' },
+  { step: '03', title: 'Pay', desc: 'Complete payment through UPI or crypto on Discord.' },
+  { step: '04', title: 'Receive', desc: 'Get your product quickly with direct support.' },
+].map(item => (
                 <div key={item.step}>
                   <div className="text-5xl font-extrabold text-[rgba(0,181,232,0.08)] mb-3 font-mono">{item.step}</div>
                   <h3 className="font-bold text-white mb-2">{item.title}</h3>
