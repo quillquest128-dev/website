@@ -7,40 +7,40 @@ import { DISCORD_LINK } from '@/lib/utils'
 
 const faqs = [
   {
-    q: 'How does purchasing work?',
-    a: 'Browse our store, click "Buy Now" on a product, fill in your details, and then join our Discord server. A staff member will reach out to complete the transaction and deliver your product.',
+    q: `How does purchasing work?`,
+    a: `Browse our store, click "Buy Now" on a product, fill in your details, and then join our Discord server. A staff member will reach out to complete the transaction and deliver your product.`,
   },
   {
-    q: 'What payment methods do you accept?',
-    a: 'We accept various payment methods through Discord. Please join our server and ask a staff member for current payment options — we aim to be as flexible as possible.',
+    q: `What payment methods do you accept?`,
+    a: `We accept various payment methods through Discord. Please join our server and ask a staff member for current payment options — we aim to be as flexible as possible.`,
   },
   {
-    q: 'How quickly will I receive my product?',
-    a: 'Most orders are fulfilled within a few hours. We have staff available regularly, so you typically won't wait long after completing payment.',
+    q: `How quickly will I receive my product?`,
+    a: `Most orders are fulfilled within a few hours. We have staff available regularly, so you typically won't wait long after completing payment.`,
   },
   {
-    q: 'What does "Low Stock" mean?',
-    a: '"Low Stock" means there are 5 or fewer units remaining. We recommend purchasing quickly to avoid missing out. Once stock hits zero, the product will be marked as "Out of Stock".',
+    q: `What does "Low Stock" mean?`,
+    a: `"Low Stock" means there are 5 or fewer units remaining. We recommend purchasing quickly to avoid missing out. Once stock hits zero, the product will be marked as "Out of Stock".`,
   },
   {
-    q: 'What if I have an issue with my product?',
-    a: 'We stand behind everything we sell. If you encounter any issues, reach out to a staff member on Discord and we\'ll work to resolve it promptly.',
+    q: `What if I have an issue with my product?`,
+    a: `We stand behind everything we sell. If you encounter any issues, reach out to a staff member on Discord and we will work to resolve it promptly.`,
   },
   {
-    q: 'Is my information safe?',
-    a: 'Yes. We only collect your name, email, and optional Discord username to process your order. Your data is stored securely and never shared with third parties.',
+    q: `Is my information safe?`,
+    a: `Yes. We only collect your name, email, and optional Discord username to process your order. Your data is stored securely and never shared with third parties.`,
   },
   {
-    q: 'Can I request a refund?',
-    a: 'Refund eligibility depends on the product type. Since these are digital goods, we generally handle issues on a case-by-case basis. Contact us on Discord for support.',
+    q: `Can I request a refund?`,
+    a: `Refund eligibility depends on the product type. Since these are digital goods, we generally handle issues on a case-by-case basis. Contact us on Discord for support.`,
   },
   {
-    q: 'Do you offer bulk discounts?',
-    a: 'Yes! For bulk orders or custom deals, please contact us directly on Discord. We\'re happy to work out custom pricing for larger orders.',
+    q: `Do you offer bulk discounts?`,
+    a: `Yes! For bulk orders or custom deals, please contact us directly on Discord. We're happy to work out custom pricing for larger orders.`,
   },
   {
-    q: 'Why Discord for payment?',
-    a: 'Discord allows us to provide a personal, secure, and hands-on purchase experience. It also means you can ask questions in real-time and get instant support.',
+    q: `Why Discord for payment?`,
+    a: `Discord allows us to provide a personal, secure, and hands-on purchase experience. It also means you can ask questions in real-time and get instant support.`,
   },
 ]
 
