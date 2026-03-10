@@ -18,62 +18,62 @@ export default async function HomePage() {
   return (
     <div className="overflow-hidden">
 
-      <section className="relative min-h-[90vh] flex items-center justify-center grid-bg">
-        <div className="glow-orb w-96 h-96 bg-[rgba(0,181,232,0.08)] -top-32 -left-32" />
-        <div className="glow-orb w-80 h-80 bg-[rgba(0,120,200,0.06)] top-1/3 -right-40" />
-        <div className="glow-orb w-64 h-64 bg-[rgba(0,181,232,0.05)] bottom-0 left-1/4" />
+      <section className="relative min-h-[78vh] sm:min-h-[88vh] flex items-center justify-center grid-bg">
+  <div className="glow-orb w-72 h-72 sm:w-96 sm:h-96 bg-[rgba(0,181,232,0.08)] -top-24 -left-24 sm:-top-32 sm:-left-32" />
+  <div className="glow-orb w-64 h-64 sm:w-80 sm:h-80 bg-[rgba(0,120,200,0.06)] top-1/3 -right-24 sm:-right-40" />
+  <div className="glow-orb w-48 h-48 sm:w-64 sm:h-64 bg-[rgba(0,181,232,0.05)] bottom-0 left-1/4" />
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-24 text-center">
-          <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[rgba(0,181,232,0.08)] border border-[rgba(0,181,232,0.2)] mb-8 text-sm font-medium text-[#00b5e8]">
-            <span className="w-2 h-2 rounded-full bg-[#00b5e8] animate-pulse" />
-            Premium Digital Products
-            <ChevronRight size={14} />
-          </div>
+  <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 py-20 sm:py-24 text-center">
+    <div className="inline-flex items-center gap-2 px-3.5 py-2 rounded-full bg-[rgba(0,181,232,0.08)] border border-[rgba(0,181,232,0.2)] mb-6 text-xs sm:text-sm font-medium text-[#00b5e8]">
+      <span className="w-2 h-2 rounded-full bg-[#00b5e8] animate-pulse" />
+      Premium Digital Products
+      <ChevronRight size={14} />
+    </div>
 
-          <h1 className="text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold tracking-tight mb-6 leading-none">
-            <span className="text-white">The Future of</span>
-            <br />
-            <span className="gradient-text">Digital Commerce</span>
-          </h1>
+    <h1 className="mx-auto max-w-[11ch] text-4xl sm:text-6xl lg:text-7xl font-extrabold tracking-[-0.04em] leading-[0.95] mb-5">
+      <span className="text-white">Fast, Safe</span>
+      <br />
+      <span className="gradient-text">Digital Delivery</span>
+    </h1>
 
-          <p className="text-lg sm:text-xl text-[#8892a4] max-w-2xl mx-auto mb-10 leading-relaxed">
-            Premium digital products delivered personally through Discord. Browse, choose, and purchase your way.
-          </p>
+    <p className="text-sm sm:text-lg text-[#8892a4] max-w-xl mx-auto mb-8 leading-relaxed">
+      Buy premium digital products with direct Discord support, simple payment, and fast fulfillment.
+    </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-            <Link href="/shop" className="btn-primary flex items-center gap-2 text-base py-3.5 px-8 shadow-neon">
-              <ShoppingBag size={18} />
-              Explore Products
-              <ArrowRight size={16} />
-            </Link>
-            <a
-              href={DISCORD_LINK}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="btn-outline flex items-center gap-2 text-base py-3.5 px-8"
-            >
-              <MessageCircle size={18} />
-              Join Discord
-            </a>
-          </div>
+    <div className="flex flex-col sm:flex-row items-center justify-center gap-3 sm:gap-4">
+      <Link href="/shop" className="btn-primary flex items-center gap-2 text-sm sm:text-base py-3.5 px-7 shadow-neon w-full sm:w-auto justify-center">
+        <ShoppingBag size={18} />
+        Explore Products
+        <ArrowRight size={16} />
+      </Link>
+      <a
+        href={DISCORD_LINK}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="btn-outline flex items-center gap-2 text-sm sm:text-base py-3.5 px-7 w-full sm:w-auto justify-center"
+      >
+        <MessageCircle size={18} />
+        Join Discord
+      </a>
+    </div>
 
-          <div className="mt-16 flex flex-wrap items-center justify-center gap-8 sm:gap-16">
-            {[
-              { label: 'Products', value: String(allProducts.length) + '+' },
-              { label: 'Happy Customers', value: '500+' },
-              { label: 'Categories', value: String(categories.length) + '+' },
-              { label: 'Discord Support', value: '24/7' },
-            ].map(stat => (
-              <div key={stat.label} className="text-center">
-                <div className="text-2xl font-extrabold gradient-text">{stat.value}</div>
-                <div className="text-sm text-[#4a5568] mt-1">{stat.label}</div>
-              </div>
-            ))}
-          </div>
+    <div className="mt-12 flex flex-wrap items-center justify-center gap-6 sm:gap-12">
+      {[
+        { label: 'Products', value: String(allProducts.length) + '+' },
+        { label: 'Categories', value: String(categories.length) + '+' },
+        { label: 'Support', value: 'Direct' },
+        { label: 'Delivery', value: 'Fast' },
+      ].map(stat => (
+        <div key={stat.label} className="text-center min-w-[88px]">
+          <div className="text-xl sm:text-2xl font-extrabold gradient-text">{stat.value}</div>
+          <div className="text-xs sm:text-sm text-[#4a5568] mt-1">{stat.label}</div>
         </div>
+      ))}
+    </div>
+  </div>
 
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-[#050505] to-transparent" />
-      </section>
+  <div className="absolute bottom-0 left-0 right-0 h-24 sm:h-32 bg-gradient-to-t from-[#050505] to-transparent" />
+</section>
 
       <section className="max-w-7xl mx-auto px-4 sm:px-6 py-20">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
