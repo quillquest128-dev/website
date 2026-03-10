@@ -1,15 +1,15 @@
 'use client'
-import { useState, useEffect, useCallback } from 'react'
-import { useSearchParams, useRouter } from 'next/navigation'
-import { Search, SlidersHorizontal, X, Package } from 'lucide-react'
+
+import { Suspense, useEffect, useState } from 'react'
+import { useSearchParams } from 'next/navigation'
+import { Search, X, Package } from 'lucide-react'
 import ProductCard from '@/components/store/ProductCard'
 import { ProductSkeletonGrid } from '@/components/store/ProductSkeleton'
 import type { Product, Category } from '@/types'
 import { cn } from '@/lib/utils'
 
-export default function ShopPage() {
+function ShopPageContent() {
   const searchParams = useSearchParams()
-  const router = useRouter()
 
   const [products, setProducts] = useState<Product[]>([])
   const [categories, setCategories] = useState<Category[]>([])
@@ -73,7 +73,6 @@ export default function ShopPage() {
 
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 py-12 min-h-screen">
-      {/* Header */}
       <div className="mb-10">
         <span className="text-sm font-semibold text-[#00b5e8] uppercase tracking-widest block mb-2">Catalog</span>
         <h1 className="text-4xl font-extrabold tracking-tight text-white mb-2">
@@ -84,9 +83,7 @@ export default function ShopPage() {
         </p>
       </div>
 
-      {/* Filters Row */}
       <div className="flex flex-col sm:flex-row gap-4 mb-8">
-        {/* Search */}
         <form onSubmit={handleSearch} className="flex-1 relative">
           <Search size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-[#4a5568]" />
           <input
@@ -98,7 +95,6 @@ export default function ShopPage() {
           />
         </form>
 
-        {/* Sort */}
         <select
           value={sortBy}
           onChange={e => setSortBy(e.target.value)}
@@ -110,7 +106,6 @@ export default function ShopPage() {
         </select>
       </div>
 
-      {/* Category Pills */}
       <div className="flex flex-wrap gap-2 mb-8">
         <button
           onClick={() => setSelectedCategory('')}
@@ -123,6 +118,7 @@ export default function ShopPage() {
         >
           All
         </button>
+
         {categories.map(cat => (
           <button
             key={cat.id}
@@ -138,6 +134,7 @@ export default function ShopPage() {
             {cat.name}
           </button>
         ))}
+
         <button
           onClick={() => setFeatured(!featured)}
           className={cn(
@@ -160,7 +157,6 @@ export default function ShopPage() {
         )}
       </div>
 
-      {/* Products Grid */}
       {loading ? (
         <ProductSkeletonGrid count={6} />
       ) : sortedProducts.length === 0 ? (
@@ -184,3 +180,11 @@ export default function ShopPage() {
     </div>
   )
 }
+
+export default function ShopPage() {
+  return (
+    <Suspense fallback={<ProductSkeletonGrid count={6} />}>
+      <ShopPageContent />
+    </Suspense>
+  )
+      }
