@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react'
 import { useParams, notFound } from 'next/navigation'
 import Image from 'next/image'
 import Link from 'next/link'
-import { ArrowLeft, ShoppingBag, MessageCircle, Package, Tag, Check } from 'lucide-react'
+import { ArrowLeft, ShoppingBag, MessageCircle, Package, Tag, Check, Minus, Plus } from 'lucide-react'
 import StockBadge from '@/components/store/StockBadge'
 import DiscordModal from '@/components/store/DiscordModal'
 import { getProductBySlug } from '@/lib/products'
@@ -18,11 +18,15 @@ export default function ProductPage() {
   const [loading, setLoading] = useState(true)
   const [modalOpen, setModalOpen] = useState(false)
   const [activeImage, setActiveImage] = useState(0)
+  const [quantityInput, setQuantityInput] = useState('1')
 
   useEffect(() => {
     async function load() {
       const data = await getProductBySlug(slug)
       setProduct(data)
+      if (data) {
+  setQuantityInput(String(data.minimum_quantity || 1))
+      }
       setLoading(false)
     }
     load()
@@ -60,6 +64,41 @@ export default function ProductPage() {
   const hasDiscount = product.discount_price && product.discount_price < product.price
   const stockStatus = getStockStatus(product)
   const allImages = [product.thumbnail, ...(product.gallery_images || [])].filter(Boolean)
+  const minQuantity = product.minimum_quantity || 1
+const parsedQuantity = Number(quantityInput)
+const quantity = Number.isFinite(parsedQuantity) ? parsedQuantity : 0
+const totalPrice = effectivePrice * Math.max(quantity, 0)
+
+let quantityError = ''
+
+if (!quantityInput.trim()) {
+  quantityError = 'Please enter a quantity.'
+} else if (!Number.isInteger(parsedQuantity) || parsedQuantity <= 0) {
+  quantityError = 'Quantity must be a whole number greater than 0.'
+} else if (quantity < minQuantity) {
+  quantityError = `Minimum quantity is ${minQuantity}.`
+} else if (quantity > product.stock_quantity) {
+  quantityError = `Choose between ${minQuantity} and ${product.stock_quantity}.`
+}
+
+const isQuantityValid =
+  quantityInput.trim() !== '' &&
+  Number.isInteger(parsedQuantity) &&
+  parsedQuantity >= minQuantity &&
+  parsedQuantity <= product.stock_quantity
+
+function updateQuantity(next: number) {
+  if (!product) return
+  setQuantityInput(String(next))
+}
+
+function increaseQuantity() {
+  updateQuantity((Number(quantityInput) || 0) + 1)
+}
+
+function decreaseQuantity() {
+  updateQuantity((Number(quantityInput) || 0) - 1)
+}
 
   return (
     <>
@@ -201,22 +240,68 @@ export default function ProductPage() {
                 </div>
               </div>
             </div>
+            <div className="mb-8">
+  <div className="flex items-center justify-between mb-2">
+    <label className="text-xs font-semibold text-white uppercase tracking-wide">
+      Quantity
+    </label>
+    <span className="text-xs text-[#4a5568]">
+      Min: {minQuantity} · Stock: {product.stock_quantity}
+    </span>
+  </div>
+
+  <div className="flex items-stretch gap-2 max-w-xs">
+    <button
+      type="button"
+      onClick={decreaseQuantity}
+      className="w-12 h-12 rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] text-white hover:border-[rgba(0,181,232,0.3)] transition-all flex items-center justify-center"
+    >
+      <Minus size={16} />
+    </button>
+
+    <input
+      type="number"
+      min={1}
+      step={1}
+      value={quantityInput}
+      onChange={e => setQuantityInput(e.target.value)}
+      className="input-dark text-center h-12"
+      placeholder={String(minQuantity)}
+    />
+
+    <button
+      type="button"
+      onClick={increaseQuantity}
+      className="w-12 h-12 rounded-xl border border-[rgba(255,255,255,0.08)] bg-[rgba(255,255,255,0.03)] text-white hover:border-[rgba(0,181,232,0.3)] transition-all flex items-center justify-center"
+    >
+      <Plus size={16} />
+    </button>
+  </div>
+
+  {quantityError ? (
+    <p className="text-xs text-red-400 mt-2">{quantityError}</p>
+  ) : (
+    <p className="text-xs text-emerald-400 mt-2">
+      Total: {formatPrice(totalPrice)}
+    </p>
+  )}
+</div>
 
             {/* Buy Button */}
             <div className="flex flex-col sm:flex-row gap-3">
-              <button
-                onClick={() => stockStatus !== 'out_of_stock' && setModalOpen(true)}
-                disabled={stockStatus === 'out_of_stock'}
-                className={`flex-1 flex items-center justify-center gap-2 py-4 rounded-full font-bold text-base transition-all ${
-                  stockStatus === 'out_of_stock'
-                    ? 'bg-[rgba(255,255,255,0.04)] text-[#4a5568] cursor-not-allowed'
-                    : 'btn-primary shadow-neon-lg'
-                }`}
-              >
-                <ShoppingBag size={18} />
-                {stockStatus === 'out_of_stock' ? 'Out of Stock' : 'Buy Now via Discord'}
-              </button>
-            </div>
+  <button
+    onClick={() => stockStatus !== 'out_of_stock' && isQuantityValid && setModalOpen(true)}
+    disabled={stockStatus === 'out_of_stock' || !isQuantityValid}
+    className={`flex-1 flex items-center justify-center gap-2 py-4 rounded-full font-bold text-base transition-all ${
+      stockStatus === 'out_of_stock' || !isQuantityValid
+        ? 'bg-[rgba(255,255,255,0.04)] text-[#4a5568] cursor-not-allowed'
+        : 'btn-primary shadow-neon-lg'
+    }`}
+  >
+    <ShoppingBag size={18} />
+    {stockStatus === 'out_of_stock' ? 'Out of Stock' : `Buy ${quantity > 0 ? quantity : ''} via Discord`}
+  </button>
+</div>
           </div>
         </div>
 
@@ -236,8 +321,12 @@ export default function ProductPage() {
 
       {/* Modal */}
       {modalOpen && (
-        <DiscordModal product={product} onClose={() => setModalOpen(false)} />
-      )}
+  <DiscordModal
+    product={product}
+    quantity={quantity}
+    onClose={() => setModalOpen(false)}
+  />
+)}
     </>
   )
 }
