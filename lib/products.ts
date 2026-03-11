@@ -73,6 +73,7 @@ export async function createOrderRequest(order: {
   customer_name: string
   customer_email: string
   discord_username?: string
+  quantity: number
   notes?: string
 }) {
   const supabase = createClient()
