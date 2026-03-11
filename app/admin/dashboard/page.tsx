@@ -343,6 +343,7 @@ function AdminProducts() {
       category_id: editingProduct.category_id || null,
       tags: editingProduct.tags || [],
       stock_quantity: editingProduct.stock_quantity || 0,
+      minimum_quantity: editingProduct.minimum_quantity || 1,
       status: editingProduct.status || 'active',
       featured: editingProduct.featured || false,
       delivery_info: editingProduct.delivery_info || '',
