@@ -392,6 +392,7 @@ function AdminProducts() {
               { label: 'Price', key: 'price', type: 'number', placeholder: '0.00' },
               { label: 'Discount Price', key: 'discount_price', type: 'number', placeholder: 'Optional' },
               { label: 'Stock Quantity', key: 'stock_quantity', type: 'number', placeholder: '0' },
+              { label: 'Minimum Quantity', key: 'minimum_quantity', type: 'number', placeholder: '1' },
               { label: 'Thumbnail URL', key: 'thumbnail', type: 'text', placeholder: 'https://...' },
             ].map(field => (
               <div key={field.key}>
