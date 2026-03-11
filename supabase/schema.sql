@@ -48,6 +48,7 @@ CREATE TABLE IF NOT EXISTS products (
   category_id          UUID REFERENCES categories(id) ON DELETE SET NULL,
   tags                 TEXT[] DEFAULT '{}',
   stock_quantity       INT NOT NULL DEFAULT 0,
+  minimum_quantity     INT NOT NULL DEFAULT 1,
   status               TEXT NOT NULL DEFAULT 'active'
                          CHECK (status IN ('active', 'inactive', 'out_of_stock')),
   featured             BOOLEAN NOT NULL DEFAULT FALSE,
