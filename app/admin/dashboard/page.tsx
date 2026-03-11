@@ -331,38 +331,84 @@ function AdminProducts() {
   }
 
   async function saveProduct() {
-    if (!editingProduct) return
-    setSaving(true)
-    const supabase = createClient()
-    const payload = {
-      title: editingProduct.title,
-      slug: editingProduct.slug || editingProduct.title?.toLowerCase().replace(/\s+/g, '-'),
-      short_description: editingProduct.short_description,
-      full_description: editingProduct.full_description,
-      price: editingProduct.price,
-      discount_price: editingProduct.discount_price || null,
-      thumbnail: editingProduct.thumbnail || null,
-      gallery_images: editingProduct.gallery_images || [],
-      category_id: editingProduct.category_id || null,
-      tags: editingProduct.tags || [],
-      stock_quantity: editingProduct.stock_quantity || 0,
-      minimum_quantity: editingProduct.minimum_quantity || 1,
-      status: editingProduct.status || 'active',
-      featured: editingProduct.featured || false,
-      delivery_info: editingProduct.delivery_info || '',
-      discord_payment_note: editingProduct.discord_payment_note || '',
-    }
+  if (!editingProduct) return
+
+  setSaving(true)
+  const supabase = createClient()
+
+  const payload = {
+    title: editingProduct.title?.trim() || '',
+    slug: (editingProduct.slug || editingProduct.title || '')
+      .toLowerCase()
+      .trim()
+      .replace(/\s+/g, '-'),
+    short_description: editingProduct.short_description?.trim() || '',
+    full_description: editingProduct.full_description?.trim() || '',
+    price: Number(editingProduct.price) || 0,
+    discount_price:
+      editingProduct.discount_price !== undefined &&
+      editingProduct.discount_price !== null &&
+      editingProduct.discount_price !== ''
+        ? Number(editingProduct.discount_price)
+        : null,
+    thumbnail: editingProduct.thumbnail?.trim() || null,
+    gallery_images: editingProduct.gallery_images || [],
+    category_id: editingProduct.category_id || null,
+    tags: editingProduct.tags || [],
+    stock_quantity: Number(editingProduct.stock_quantity) || 0,
+    minimum_quantity: Number((editingProduct as any).minimum_quantity) || 1,
+    status: editingProduct.status || 'active',
+    featured: editingProduct.featured || false,
+    delivery_info: editingProduct.delivery_info?.trim() || '',
+    discord_payment_note: editingProduct.discord_payment_note?.trim() || '',
+  }
+
+  if (!payload.title) {
+    toast.error('Title is required')
+    setSaving(false)
+    return
+  }
+
+  if (!payload.slug) {
+    toast.error('Slug is required')
+    setSaving(false)
+    return
+  }
+
+  try {
+    let result
 
     if (editingProduct.id) {
-      await supabase.from('products').update(payload).eq('id', editingProduct.id)
+      result = await supabase
+        .from('products')
+        .update(payload)
+        .eq('id', editingProduct.id)
+        .select()
+        .single()
     } else {
-      await supabase.from('products').insert([payload])
+      result = await supabase
+        .from('products')
+        .insert([payload])
+        .select()
+        .single()
     }
 
+    if (result.error) {
+      console.error('Product save failed:', result.error)
+      toast.error(result.error.message || 'Failed to save product')
+      setSaving(false)
+      return
+    }
+
+    console.log('Saved product:', result.data)
     toast.success(editingProduct.id ? 'Product updated!' : 'Product created!')
     setEditingProduct(null)
+    await loadData()
+  } catch (err: any) {
+    console.error('Unexpected save error:', err)
+    toast.error(err?.message || 'Something went wrong while saving')
+  } finally {
     setSaving(false)
-    loadData()
   }
 
   async function deleteProduct(id: string) {
