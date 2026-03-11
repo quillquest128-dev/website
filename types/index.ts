@@ -14,21 +14,13 @@ export interface Product {
   category?: Category
   tags: string[]
   stock_quantity: number
+  minimum_quantity: number
   status: 'active' | 'inactive' | 'out_of_stock'
   featured: boolean
   delivery_info: string
   discord_payment_note: string
   created_at: string
   updated_at: string
-}
-
-export interface Category {
-  id: string
-  name: string
-  slug: string
-  description: string | null
-  icon: string | null
-  created_at: string
 }
 
 export interface OrderRequest {
@@ -38,6 +30,7 @@ export interface OrderRequest {
   customer_name: string
   customer_email: string
   discord_username: string | null
+  quantity: number
   order_status: 'pending' | 'contacted' | 'completed' | 'cancelled'
   notes: string | null
   created_at: string
