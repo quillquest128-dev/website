@@ -9,10 +9,11 @@ import toast from 'react-hot-toast'
 
 interface DiscordModalProps {
   product: Product
+  quantity: number
   onClose: () => void
 }
 
-export default function DiscordModal({ product, onClose }: DiscordModalProps) {
+export default function DiscordModal({ product, quantity, onClose }: DiscordModalProps) {
   const [step, setStep] = useState<'form' | 'success'>('form')
   const [loading, setLoading] = useState(false)
   const [form, setForm] = useState({
@@ -23,9 +24,10 @@ export default function DiscordModal({ product, onClose }: DiscordModalProps) {
   })
 
   const price = getEffectivePrice(product)
+  const totalPrice = price * quantity
   const discordMessage = encodeURIComponent(
-    `Hi! I'd like to purchase: ${product.title} ($${price.toFixed(2)})\nDiscord: ${form.discord_username || '[your username]'}`
-  )
+  `Hi! I'd like to purchase: ${product.title}\nQuantity: ${quantity}\nUnit Price: $${price.toFixed(2)}\nTotal: $${totalPrice.toFixed(2)}\nDiscord: ${form.discord_username || '[your username]'}`
+)
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault()
@@ -36,12 +38,13 @@ export default function DiscordModal({ product, onClose }: DiscordModalProps) {
     setLoading(true)
     try {
       await createOrderRequest({
-        product_id: product.id,
-        customer_name: form.customer_name,
-        customer_email: form.customer_email,
-        discord_username: form.discord_username || undefined,
-        notes: form.notes || undefined,
-      })
+  product_id: product.id,
+  customer_name: form.customer_name,
+  customer_email: form.customer_email,
+  discord_username: form.discord_username || undefined,
+  quantity,
+  notes: form.notes || undefined,
+})
       setStep('success')
     } catch (err) {
       toast.error('Something went wrong. Please try again.')
@@ -80,13 +83,16 @@ export default function DiscordModal({ product, onClose }: DiscordModalProps) {
           <>
             {/* Product Summary */}
             <div className="px-6 py-4 bg-[rgba(0,181,232,0.04)] border-b border-[rgba(255,255,255,0.04)]">
-              <div className="flex items-center justify-between">
-                <div>
-                  <p className="text-xs text-[#8892a4] mb-1">Purchasing</p>
-                  <p className="font-semibold text-white text-sm line-clamp-1">{product.title}</p>
-                </div>
-                <span className="text-lg font-bold text-[#00b5e8]">{formatPrice(price)}</span>
-              </div>
+              <div className="flex items-center justify-between gap-4">
+  <div>
+    <p className="text-xs text-[#8892a4] mb-1">Purchasing</p>
+    <p className="font-semibold text-white text-sm line-clamp-1">{product.title}</p>
+    <p className="text-xs text-[#4a5568] mt-1">
+      Quantity: {quantity} × {formatPrice(price)}
+    </p>
+  </div>
+  <span className="text-lg font-bold text-[#00b5e8]">{formatPrice(totalPrice)}</span>
+</div>
             </div>
 
             {/* Notice */}
