@@ -346,11 +346,9 @@ function AdminProducts() {
     full_description: editingProduct.full_description?.trim() || '',
     price: Number(editingProduct.price) || 0,
     discount_price:
-      editingProduct.discount_price !== undefined &&
-      editingProduct.discount_price !== null &&
-      editingProduct.discount_price !== ''
-        ? Number(editingProduct.discount_price)
-        : null,
+  editingProduct.discount_price == null
+    ? null
+    : Number(editingProduct.discount_price),
     thumbnail: editingProduct.thumbnail?.trim() || null,
     gallery_images: editingProduct.gallery_images || [],
     category_id: editingProduct.category_id || null,
