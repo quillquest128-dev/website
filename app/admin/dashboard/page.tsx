@@ -269,8 +269,11 @@ function RecentOrdersTable({
                 </td>
                 <td className="px-5 py-4">
                   <div className="text-sm text-[#8892a4] max-w-32 truncate">
-                    {order.product?.title || 'N/A'}
-                  </div>
+  {order.product?.title || 'N/A'}
+</div>
+<div className="text-xs text-[#4a5568]">
+  Qty: {order.quantity || 1}
+</div>
                   {order.product?.price && (
                     <div className="text-xs text-[#00b5e8]">{formatPrice(order.product.price)}</div>
                   )}
