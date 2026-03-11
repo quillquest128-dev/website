@@ -99,6 +99,7 @@ CREATE TABLE IF NOT EXISTS order_requests (
   customer_name    TEXT NOT NULL,
   customer_email   TEXT NOT NULL,
   discord_username TEXT,
+  quantity          INT NOT NULL DEFAULT 1,
   order_status     TEXT NOT NULL DEFAULT 'pending'
                      CHECK (order_status IN ('pending', 'contacted', 'completed', 'cancelled')),
   notes            TEXT,
