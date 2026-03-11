@@ -1,5 +1,14 @@
 // types/index.ts
 
+export interface Category {
+  id: string
+  name: string
+  slug: string
+  icon?: string | null
+  created_at?: string
+  updated_at?: string
+}
+
 export interface Product {
   id: string
   title: string
