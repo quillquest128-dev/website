@@ -320,14 +320,29 @@ function AdminProducts() {
   useEffect(() => { loadData() }, [])
 
   async function loadData() {
-    const supabase = createClient()
-    const [prodRes, catRes] = await Promise.all([
-      supabase.from('products').select('*, category:categories(name)').order('created_at', { ascending: false }),
-      supabase.from('categories').select('*'),
-    ])
-    setProducts((prodRes.data as any) ?? [])
-    setCategories(catRes.data ?? [])
-    setLoading(false)
+  const supabase = createClient()
+
+  const [prodRes, catRes] = await Promise.all([
+    supabase
+      .from('products')
+      .select('*, category:categories(name)')
+      .order('created_at', { ascending: false }),
+    supabase.from('categories').select('*'),
+  ])
+
+  if (prodRes.error) {
+    console.error('Failed to load products:', prodRes.error)
+    toast.error(`Load products failed: ${prodRes.error.message}`)
+  }
+
+  if (catRes.error) {
+    console.error('Failed to load categories:', catRes.error)
+    toast.error(`Load categories failed: ${catRes.error.message}`)
+  }
+
+  setProducts((prodRes.data as any) ?? [])
+  setCategories(catRes.data ?? [])
+  setLoading(false)
   }
 
   async function saveProduct() {
