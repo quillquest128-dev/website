@@ -63,7 +63,9 @@ export default function ProductPage() {
   const effectivePrice = getEffectivePrice(product)
   const hasDiscount = product.discount_price && product.discount_price < product.price
   const stockStatus = getStockStatus(product)
-  const allImages = [product.thumbnail, ...(product.gallery_images || [])].filter(Boolean)
+  const allImages = [product.thumbnail, ...(product.gallery_images || [])].filter(
+  (img): img is string => Boolean(img)
+)
   const minQuantity = product.minimum_quantity || 1
 const parsedQuantity = Number(quantityInput)
 const quantity = Number.isFinite(parsedQuantity) ? parsedQuantity : 0
