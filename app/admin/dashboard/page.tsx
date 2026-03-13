@@ -414,9 +414,16 @@ function AdminProducts() {
     }
 
     console.log('Saved product:', result.data)
-    toast.success(editingProduct.id ? 'Product updated!' : 'Product created!')
-    setEditingProduct(null)
-    await loadData()
+
+if (!result.data) {
+  toast.error('Product save returned no data')
+  setSaving(false)
+  return
+}
+
+toast.success(editingProduct.id ? 'Product updated!' : 'Product created!')
+setEditingProduct(null)
+await loadData()
   } catch (err: any) {
     console.error('Unexpected save error:', err)
     toast.error(err?.message || 'Something went wrong while saving')
