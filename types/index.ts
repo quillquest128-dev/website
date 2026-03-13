@@ -17,9 +17,9 @@ export interface Product {
   full_description: string
   price: number
   discount_price: number | null
-  thumbnail: string
+  thumbnail: string | null
   gallery_images: string[]
-  category_id: string
+  category_id: string | null
   category?: Category
   tags: string[]
   stock_quantity: number
